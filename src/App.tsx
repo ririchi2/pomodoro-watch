@@ -6,9 +6,6 @@ function App() {
   return (
     <div className="flex flex-col items-center h-screen overflow-hidden bg-green-600">
       <Navbar />
-      <div className='text-3xl font-bold underline'>
-        Pomodoro
-      </div>
       <Timer />
     </div>
   );

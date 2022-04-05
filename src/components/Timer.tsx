@@ -3,19 +3,19 @@ import useSound from 'use-sound';
 // import clickSfx from '../sounds/click.mp3';
 
 
-function Timer() {
+function Timer(): JSX.Element {
   const clickSfx = require('../sounds/click.mp3');
-  const clickUiSfx = require('../sounds/clickui.mp3')
+  const clickUiSfx = require('../sounds/clickui.mp3');
+  const dingSfx = require('../sounds/dingelevator.mp3');
 
   const workMinutes = 25;
   const breakMinutes = 5;
 
-  const [secondsLeft, setSecondsLeft] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(1500); //Inicializamos a 1500 porque 1500segs = 25min
+  const [isPaused, setIsPaused] = useState(true);
   const [mode, setMode] = useState('work');
 
   //Hay que usar referencias mutables porque no actualiza a cada segundo
-
   const secondsLeftRef = useRef(secondsLeft);
   const isPausedRef = useRef(isPaused);
   const modeRef = useRef(mode);
@@ -52,6 +52,7 @@ function Timer() {
       }
 
       if (secondsLeftRef.current === 0) {
+        playDingSfx();
         return switchMode();
       }
 
@@ -70,22 +71,23 @@ function Timer() {
   if (seconds < 10) secondsString = '0' + seconds; // 25:0 => 25:00
 
   //esto es una mickeyherramienta para mas tarde
-  const totalSeconds = mode === 'work'
-    ? workMinutes * 60
-    : breakMinutes * 60;
-  const percentage = Math.round(secondsLeftRef.current / totalSeconds) * 100;
+  // const totalSeconds = mode === 'work'
+  //   ? workMinutes * 60
+  //   : breakMinutes * 60;
+  // const percentage = Math.round(secondsLeftRef.current / totalSeconds) * 100;
 
   //hook sounds
   const [playClickSfx] = useSound(clickSfx);
   const [playClickUi] = useSound(clickUiSfx);
+  const [playDingSfx] = useSound(dingSfx);
 
   return (
     <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center bg-green-500 border border-transparent rounded shadow-orange-500/50'>
-      <div className='px-8 py-2 my-2 text-lg font-bold rounded shadow-lg cursor-default bg-slate-200/50 tex'>{mode}</div>
+      <div className='px-8 py-2 my-2 text-xl font-bold rounded shadow-lg cursor-default bg-slate-200/50'>{mode}</div>
       {
         isPaused
-          ? <div className='w-1/3 py-2 my-2 text-4xl font-bold bg-red-500 rounded-lg cursor-default'>{minutes + ':' + secondsString}</div>
-          : <div className='w-1/3 py-2 my-2 text-4xl font-bold rounded-lg cursor-default bg-slate-200/50'>{minutes + ':' + secondsString}</div>
+          ? <div className='w-1/3 py-2 my-2 text-6xl font-bold bg-red-500 rounded-lg cursor-default'>{minutes + ':' + secondsString}</div>
+          : <div className='w-1/3 py-2 my-2 text-6xl font-bold rounded-lg cursor-default bg-slate-200/50'>{minutes + ':' + secondsString}</div>
 
       }
       <div>
