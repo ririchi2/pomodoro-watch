@@ -86,8 +86,8 @@ function Timer(): JSX.Element {
       <div className='px-8 py-2 my-2 text-xl font-bold rounded shadow-lg cursor-default bg-slate-200/50'>{mode}</div>
       {
         isPaused
-          ? <div className='w-1/3 py-2 my-2 text-6xl font-bold bg-red-500 rounded-lg cursor-default'>{minutes + ':' + secondsString}</div>
-          : <div className='w-1/3 py-2 my-2 text-6xl font-bold rounded-lg cursor-default bg-slate-200/50'>{minutes + ':' + secondsString}</div>
+          ? <div className='w-auto p-4 my-2 text-6xl font-bold bg-red-500 rounded-lg cursor-default'>{minutes + ':' + secondsString}</div>
+          : <div className='w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-slate-200/50'>{minutes + ':' + secondsString}</div>
 
       }
       <div>
