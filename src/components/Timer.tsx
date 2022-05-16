@@ -151,10 +151,10 @@ function Timer(): JSX.Element {
     <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center border border-transparent rounded bg-amazon shadow-orange-500/50'>
       <div>
         <button
-          onClick={() => { switchWatch("pomo") }}
+          onClick={() => { switchWatch("pomo"); playClickSfx(); }}
           className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver'>🍅</button>
         <button
-          onClick={() => { switchWatch("stop") }}
+          onClick={() => { switchWatch("stop"); playClickSfx(); }}
           className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver'>⌛</button>
       </div>
       <div>
