@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import useSound from 'use-sound';
-// import clickSfx from '../sounds/click.mp3';
 
 
 function Timer(): JSX.Element {
@@ -14,11 +13,13 @@ function Timer(): JSX.Element {
   const [secondsLeft, setSecondsLeft] = useState(1500); //Inicializamos a 1500 porque 1500segs = 25min
   const [isPaused, setIsPaused] = useState(true);
   const [mode, setMode] = useState('work');
+  const [watch, setWatch] = useState('pomo');
 
   //Hay que usar referencias mutables porque no actualiza a cada segundo
   const secondsLeftRef = useRef(secondsLeft);
   const isPausedRef = useRef(isPaused);
   const modeRef = useRef(mode);
+  const watchRef = useRef(watch);
 
   function switchMode(): void {
     const nextMode = modeRef.current === 'work' ? 'break' : 'work';  //si es 'work' el siguiente es 'break' sino 'work'
@@ -29,7 +30,7 @@ function Timer(): JSX.Element {
     setSecondsLeft(nextSeconds);
     //Actualizamos referencias
     modeRef.current = nextMode;
-    secondsLeftRef.current = nextSeconds
+    secondsLeftRef.current = nextSeconds;
   }
 
   function tick(): void {
@@ -81,41 +82,138 @@ function Timer(): JSX.Element {
   const [playClickUi] = useSound(clickUiSfx);
   const [playDingSfx] = useSound(dingSfx);
 
-  return (
-    <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center bg-green-500 border border-transparent rounded shadow-orange-500/50'>
-      <div className='px-8 py-2 my-2 text-xl font-bold rounded shadow-lg cursor-default bg-slate-200/50'>{mode}</div>
-      {
-        isPaused
-          ? <div className='w-auto p-4 my-2 text-6xl font-bold bg-red-500 rounded-lg cursor-default'>{minutes + ':' + secondsString}</div>
-          : <div className='w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-slate-200/50'>{minutes + ':' + secondsString}</div>
+  const Stopwatch = () => {
+    const [time, setTime] = useState(0);
+    const [running, setRunning] = useState(false);
 
-      }
-      <div>
-        {isPaused
-          ? <button
-            onClick={() => { setIsPaused(false); isPausedRef.current = false; playClickUi(); }}
-            className="px-8 py-2 my-2 text-lg font-bold bg-green-700 rounded shadow-lg hover:bg-emerald-700 hover:shadow-emerald-500/40 shadow-emerald-500/50"
-          >Play</button>
-          : <button
-            onClick={() => { setIsPaused(true); isPausedRef.current = true; playClickUi(); }}
-            className="px-8 py-2 my-2 text-lg font-bold bg-green-700 rounded shadow-lg hover:bg-emerald-700 hover:shadow-emerald-500/40 shadow-emerald-500/50"
-          >Pause</button>
+    useEffect(() => {
+
+      const interval = setInterval(() => {
+        if (running) {
+          setTime((prevTime) => prevTime + 10);
+        } else if (!running) {
+          clearInterval(interval)
         }
+      }, 10);
+
+      return () => {
+        clearInterval(interval)
+      }
+    }, [running]);
+
+    return (
+      <div className="stopwatch">
+        {
+        stopwatchTimer()
+        }
+        <div className="buttons">
+          <button
+            onClick={() => {setRunning(true); playClickUi();}}
+            className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver'
+          >Start</button>
+          <button
+            onClick={() => {setRunning(false); playClickUi()}}
+            className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver'
+          >Stop</button>
+          <button
+            onClick={() => {setTime(0); playClickUi()}}
+            className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver'
+          >Reset</button>
+        </div>
+      </div>
+    );
+
+    function stopwatchTimer(): React.ReactNode {
+      return running
+        ? <div className="w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-pale-silver">
+          <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
+          <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
+          <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
+        </div>
+        : <div className="w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-rusty-red">
+          <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
+          <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
+          <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
+        </div>;
+    }
+  };
+
+  function switchWatch(watch: string): void {
+    const nextWatch = watch  //si es 'work' el siguiente es 'break' sino 'work'
+
+    setWatch(nextWatch);
+    watchRef.current = nextWatch;
+    setIsPaused(true);
+    isPausedRef.current = true
+  }
+
+  return (
+    <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center border border-transparent rounded bg-amazon shadow-orange-500/50'>
+      <div>
+        <button
+          onClick={() => { switchWatch("pomo") }}
+          className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver'>🍅</button>
+        <button
+          onClick={() => { switchWatch("stop") }}
+          className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver'>⌛</button>
       </div>
       <div>
         {
-          mode === 'work'
-            ? <button
-              onClick={() => { switchMode(); playClickSfx(); }}
-              className="px-8 py-2 my-2 text-lg font-bold bg-green-700 rounded shadow-lg hover:bg-emerald-700 hover:shadow-emerald-500/40 shadow-emerald-500/50">Break</button>
-            : <button
-              onClick={() => { switchMode(); playClickSfx(); }}
-              className="px-8 py-2 my-2 text-lg font-bold bg-green-700 rounded shadow-lg hover:bg-emerald-700 hover:shadow-emerald-500/40 shadow-emerald-500/50">Work</button>
+          watches()
         }
       </div>
     </div>
 
   )
+
+  function switchModeButtonNode(): React.ReactNode {
+    return mode === 'work'
+      ? <button
+        onClick={() => { switchMode(); playClickSfx(); }}
+        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver">Break</button>
+      : <button
+        onClick={() => { switchMode(); playClickSfx(); }}
+        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver">Work</button>;
+  }
+
+  function playPauseButtonNode(): React.ReactNode {
+    return isPaused
+      ? <button
+        onClick={() => { setIsPaused(false); isPausedRef.current = false; playClickUi(); }}
+        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver"
+      >Play</button>
+      : <button
+        onClick={() => { setIsPaused(true); isPausedRef.current = true; playClickUi(); }}
+        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver"
+      >Pause</button>;
+  }
+
+  function timerNode(): React.ReactNode {
+    return isPaused
+      ? <div className='w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-rusty-red'>{minutes + ':' + secondsString}</div>
+      : <div className='w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-pale-silver'>{minutes + ':' + secondsString}</div>;
+  }
+
+  function watches(): React.ReactNode {
+    return watch === "stop"
+      ? <Stopwatch />
+      : <><div className='px-8 py-2 my-2 text-xl font-bold text-white rounded shadow-lg cursor-default bg-cyan-700'>{mode}</div>
+        {
+          timerNode()
+        }
+        <div>
+          {
+            playPauseButtonNode()
+          }
+        </div>
+        <div>
+          {
+            switchModeButtonNode()
+          }
+        </div></>
+  }
+
+
 }
 
 export default Timer
