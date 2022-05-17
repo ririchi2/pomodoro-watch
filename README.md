@@ -41,6 +41,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## Learn More
 
-Create React App
-TailwindCSS
-[React use-sound](https://github.com/joshwcomeau/use-sound)
+[Create React App](https://create-react-app.dev/).\
+[TailwindCSS](https://tailwindcss.com/).\
+[React use-sound](https://github.com/joshwcomeau/use-sound).\
+[TypeScript](https://www.typescriptlang.org/).
