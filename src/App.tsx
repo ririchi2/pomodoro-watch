@@ -4,7 +4,6 @@ import Timer from './components/Timer';
 function App() {
   return (
     <div className="flex flex-col items-center h-screen overflow-hidden bg-pale-silver">
-      {/* <Navbar /> */}
       <Timer />
     </div>
   );
