@@ -1,6 +1,6 @@
 # PomodoroWatch - Pomodoro App :watch:
 
-This is my own vision of a Pomodoro Watch I used for studying, its still in development and its subject to changes.
+This is my own vision of a Pomodoro Watch I used for studying, its still in development and its subject to changes. :warning:
 
 
 # Tech Used
