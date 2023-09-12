@@ -113,8 +113,8 @@ function Timer(): JSX.Element {
 
   function timerNode(): React.ReactNode {
     return isPaused
-      ? <div className='w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-rusty-red'>{minutes + ':' + secondsString}</div>
-      : <div className='w-auto p-4 my-2 text-6xl font-bold rounded shadow cursor-default bg-gray-100'>{minutes + ':' + secondsString}</div>;
+      ? <div className='w-auto p-4 my-2 text-6xl font-bold rounded cursor-default bg-rusty-red'>{minutes + ':' + secondsString}</div>
+      : <div className='w-auto p-4 my-2 text-6xl font-bold rounded cursor-default bg-gray-100'>{minutes + ':' + secondsString}</div>;
   }
 
   function playPauseButtonNode(): React.ReactNode {
