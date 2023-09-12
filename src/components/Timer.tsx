@@ -144,7 +144,7 @@ function Timer(): JSX.Element {
   }
 
   return (
-    <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center border-2 border-gray-300 rounded shadow-orange-500/50'>
+    <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center border-gray-300 rounded shadow-orange-500/50'>
       <div>
         <button
           onClick={() => { switchWatch("pomo"); playClickSfx(); }}
