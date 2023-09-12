@@ -7,12 +7,12 @@ const dingSfx = require('../sounds/dingelevator.mp3');
 
 
 function Timer(): JSX.Element {
-  const workMinutes = 25;
-  const breakMinutes = 5;
+  const WorkMinutes = 25;
+  const BreakMinutes = 5;
 
   const [secondsLeft, setSecondsLeft] = useState(1500); //Inicializamos a 1500 porque 1500segs = 25min
   const [isPaused, setIsPaused] = useState(true);
-  const [mode, setMode] = useState('work');
+  const [mode, setMode] = useState('Work');
   const [watch, setWatch] = useState('pomo');
 
   //Hay que usar referencias mutables porque no actualiza a cada segundo
@@ -32,8 +32,8 @@ function Timer(): JSX.Element {
   const [playDingSfx] = useSound(dingSfx);
 
   function switchMode(): void {
-    const nextMode = modeRef.current === 'work' ? 'break' : 'work';  //si es 'work' el siguiente es 'break' sino 'work'
-    const nextSeconds = (nextMode === 'work' ? workMinutes : breakMinutes) * 60;  //segundos
+    const nextMode = modeRef.current === 'Work' ? 'Break' : 'Work';  //si es 'Work' el siguiente es 'Break' sino 'Work'
+    const nextSeconds = (nextMode === 'Work' ? WorkMinutes : BreakMinutes) * 60;  //segundos
 
 
     setMode(nextMode);
@@ -49,7 +49,7 @@ function Timer(): JSX.Element {
   }
 
   function initTimer(): void {
-    setSecondsLeft(workMinutes * 60); //Iniciamos en work
+    setSecondsLeft(WorkMinutes * 60); //Iniciamos en Work
   }
 
   //Cada vez que montamos/actualizamos el componente ejecutamos <-
@@ -77,13 +77,13 @@ function Timer(): JSX.Element {
   }, [isPaused]);
 
   //esto es una mickeyherramienta para mas tarde
-  // const totalSeconds = mode === 'work'
-  //   ? workMinutes * 60
-  //   : breakMinutes * 60;
+  // const totalSeconds = mode === 'Work'
+  //   ? WorkMinutes * 60
+  //   : BreakMinutes * 60;
   // const percentage = Math.round(secondsLeftRef.current / totalSeconds) * 100;
 
   function switchWatch(watch: string): void {
-    const nextWatch = watch  //si es 'work' el siguiente es 'break' sino 'work'
+    const nextWatch = watch  //si es 'Work' el siguiente es 'Break' sino 'Work'
 
     setWatch(nextWatch);
     watchRef.current = nextWatch;
@@ -92,10 +92,9 @@ function Timer(): JSX.Element {
   }
 
   function switchWatchNode(): React.ReactNode {
-    return watch === "stop"
-      ? <Stopwatch />
-      : <>
-        <div className='px-8 py-2 my-2 text-xl font-bold text-white rounded shadow-lg cursor-default bg-cyan-700'>{mode}</div>
+    return watch === "stop" ? <Stopwatch /> :
+      <>
+        <div className='px-8 py-2 my-2 text-xl text-gray-600 rounded shadow cursor-default bg-gray-100'>{mode}</div>
         {
           timerNode()
         }
@@ -115,40 +114,44 @@ function Timer(): JSX.Element {
   function timerNode(): React.ReactNode {
     return isPaused
       ? <div className='w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-rusty-red'>{minutes + ':' + secondsString}</div>
-      : <div className='w-auto p-4 my-2 text-6xl font-bold rounded-lg cursor-default bg-pale-silver'>{minutes + ':' + secondsString}</div>;
+      : <div className='w-auto p-4 my-2 text-6xl font-bold rounded shadow cursor-default bg-gray-100'>{minutes + ':' + secondsString}</div>;
   }
 
   function playPauseButtonNode(): React.ReactNode {
-    return isPaused
-      ? <button
+    return isPaused ?
+      <button
         onClick={() => { setIsPaused(false); isPausedRef.current = false; playClickUi(); }}
-        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver"
-      >Play</button>
-      : <button
+        className="px-8 py-2 my-2 text-lg text-gray-500 rounded shadow bg-gray-100 hover:bg-white shadow-pale-silver"
+      >
+        Play
+      </button> :
+      <button
         onClick={() => { setIsPaused(true); isPausedRef.current = true; playClickUi(); }}
-        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver"
-      >Pause</button>;
+        className="px-8 py-2 my-2 text-lg text-gray-500 rounded shadow bg-gray-100 hover:bg-white shadow-pale-silver"
+      >
+        Pause
+      </button>;
   }
 
   function switchModeButtonNode(): React.ReactNode {
-    return mode === 'work'
+    return mode === 'Work'
       ? <button
         onClick={() => { switchMode(); playClickSfx(); }}
-        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver">Break</button>
+        className="px-8 py-2 my-2 text-lg text-gray-500 rounded shadow bg-gray-100 hover:bg-white shadow-pale-silver">Break</button>
       : <button
         onClick={() => { switchMode(); playClickSfx(); }}
-        className="px-8 py-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 shadow-pale-silver">Work</button>;
+        className="px-8 py-2 my-2 text-lg text-gray-500 rounded shadow bg-gray-100 hover:bg-white shadow-pale-silver">Work</button>;
   }
 
   return (
-    <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center border border-transparent rounded bg-amazon shadow-orange-500/50'>
+    <div className='flex flex-col items-center w-11/12 max-w-screen-sm py-2 my-2 font-mono text-center border-2 border-gray-300 rounded shadow-orange-500/50'>
       <div>
         <button
           onClick={() => { switchWatch("pomo"); playClickSfx(); }}
-          className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 hover:scale-105'>🍅</button>
+          className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow bg-gray-100 hover:bg-white hover:scale-105'>🍅</button>
         <button
           onClick={() => { switchWatch("stop"); playClickSfx(); }}
-          className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow-lg bg-black-coffee hover:bg-black-coffee/90 hover:scale-105'>⌛</button>
+          className='px-4 py-2 mx-2 my-2 text-lg font-bold text-white rounded shadow bg-gray-100 hover:bg-white hover:scale-105'>⌛</button>
       </div>
       <div>
         {
