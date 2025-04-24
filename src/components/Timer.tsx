@@ -94,7 +94,7 @@ function Timer(): JSX.Element {
   function switchWatchNode(): React.ReactNode {
     return watch === "stop" ? <Stopwatch /> :
       <>
-        <div className='px-8 py-2 my-2 text-xl text-gray-600 rounded shadow cursor-default bg-gray-400'>{mode}</div>
+        <div className='px-8 py-2 my-2 text-xl text-gray-600 rounded shadow cursor-default bg-gray-300'>{mode}</div>
         {
           timerNode()
         }
